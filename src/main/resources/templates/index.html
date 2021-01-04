@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+<!--    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">-->
+<!--    <meta name="generator" content="Hugo 0.79.0">-->
+
+<!--    <meta name="author" content=" sunil8107(Sunil Rajput) from: https://bootsnipp.com/snippets/1ea0N">-->
+
+    <title>Chat helper</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sticky-footer-navbar/">
+
+    
+
+    <!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" type="text/css" rel="stylesheet">
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      .type_msg{
+        /*position: absolute;*/
+        /*bottom: 0;*/
+        /*width: 40%;*/
+        /*vertical-align: bottom;*/
+      }
+
+      .nav-text{
+        color:whitesmoke;
+      }
+
+      #uploadFile{
+        display:inline-block;
+        width: 70px;
+        height:30px;
+
+      }
+
+      #submitMsg{
+        display:inline-block;
+        width: 50px;
+        height:30px;
+      }
+
+      #writeMsg{
+        display:inline-block;
+        width: 70%;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <link href="../css/sticky-footer-navbar.css" rel="stylesheet">
+  </head>
+  <body class="d-flex flex-column h-100">
+    
+<header>
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+
+
+      <!--      <a class="navbar-brand" href="#">navbar</a>-->
+
+<!--      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--        <span class="navbar-toggler-icon"></span>-->
+<!--      </button>-->
+
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
+          <li class="nav-item active">
+                <p data-th-text = "${username}" class = "nav-text"></p>
+<!--            <a class="nav-link" aria-current="page" href="#">Home</a>-->
+          </li>
+
+          <li class="nav-item">
+            <p class = "nav-text">, Hello!</p>
+<!--            <a class="nav-link" href="#">Link</a>-->
+          </li>
+
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>-->
+<!--          </li>-->
+        </ul>
+<!--        <form class="d-flex">-->
+<!--          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+<!--          <button class="btn btn-outline-success" type="submit">Search</button>-->
+<!--        </form>-->
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Begin page content -->
+<main class="flex-shrink-0">
+  <div class="container">
+
+      <h3 class=" text-center">Messaging</h3>
+      <div class="messaging">
+        <div class="inbox_msg">
+          <div class="inbox_people">
+            <div class="headind_srch">
+              <div class="recent_heading">
+                <h4>Recent</h4>
+              </div>
+              <div class="srch_bar">
+                <div class="stylish-input-group">
+                  <input type="text" class="search-bar"  placeholder="Search" >
+                  <span class="input-group-addon">
+                <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+                </span> </div>
+              </div>
+            </div>
+            <div class="inbox_chat">
+              <div class="chat_list active_chat">
+                <div class="chat_people">
+                  <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                  <div class="chat_ib">
+                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                    <p>Test, which is a new approach to have all solutions
+                      astrology under one roof.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="chat_list">
+                <div class="chat_people">
+                  <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                  <div class="chat_ib">
+                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                    <p>Test, which is a new approach to have all solutions
+                      astrology under one roof.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="chat_list">
+                <div class="chat_people">
+                  <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                  <div class="chat_ib">
+                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                    <p>Test, which is a new approach to have all solutions
+                      astrology under one roof.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="chat_list">
+                <div class="chat_people">
+                  <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                  <div class="chat_ib">
+                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                    <p>Test, which is a new approach to have all solutions
+                      astrology under one roof.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="chat_list">
+                <div class="chat_people">
+                  <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                  <div class="chat_ib">
+                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                    <p>Test, which is a new approach to have all solutions
+                      astrology under one roof.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="chat_list">
+                <div class="chat_people">
+                  <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                  <div class="chat_ib">
+                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                    <p>Test, which is a new approach to have all solutions
+                      astrology under one roof.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="chat_list">
+                <div class="chat_people">
+                  <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
+                  <div class="chat_ib">
+                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
+                    <p>Test, which is a new approach to have all solutions
+                      astrology under one roof.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+          <div class="mesgs">
+            <div class="msg_history">
+<!--              <div class="incoming_msg">-->
+<!--                <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>-->
+<!--                <div class="received_msg">-->
+<!--                  <div class="received_withd_msg">-->
+<!--                    <p>Test which is a new approach to have all-->
+<!--                      solutions</p>-->
+<!--                    <span class="time_date"> 11:01 AM    |    June 9</span></div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="outgoing_msg">-->
+<!--                <div class="sent_msg">-->
+<!--                  <p>Test which is a new approach to have all-->
+<!--                    solutions</p>-->
+<!--                  <span class="time_date"> 11:01 AM    |    June 9</span> </div>-->
+<!--              </div>-->
+
+
+
+          <div th:each="message : ${MessageList}">
+
+            <div class="incoming_msg" th:if="${message.getReceiver()} == Paige">
+              <div class="incoming_msg_img">
+                <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+              </div>
+              <div class="received_msg">
+                <div class="received_withd_msg">
+                  <p th:text="${message.getContent()}">content</p>
+                  <span class="time_date" th:text="${message.getTime()}">time</span>
+                </div>
+              </div>
+            </div>
+
+          <div class="outgoing_msg" th:if="${message.getSender()} == Paige">
+            <div class="sent_msg">
+              <p th:text="${message.getContent()}"></p>
+              <span class="time_date" th:text="${message.getTime()}"></span> </div>
+          </div>
+
+          </div>
+
+
+
+
+
+            <div class="type_msg">
+              <div class="input_msg_write">
+                <form action="/SendMessage" method="POST" >
+                    <input type="text" class="write_msg" id="writeMsg" name="message" placeholder="Type a message" />
+                    <button class="msg_send_btn" id="submitMsg" type="submit">send</button>
+                </form>
+
+                <form  action="/SendFile" method="post" enctype="multipart/form-data">
+                  <input type="file" name="myfile"/>
+                  <input type="submit" value="submit"/>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <p class="text-center top_spac"> Design by <a target="_blank" href="#">Sunil Rajput</a></p>
+
+      </div>
+
+
+  </div>
+</main>
+
+<footer class="footer mt-auto py-3 bg-light">
+  <div class="container">
+    <span class="text-muted">developed by Yuehao Sui and Zidi Chen. 2020</span>
+  </div>
+</footer>
+
+
+    <script src="../css/bootstrap.bundle.min.js"></script>
+
+      
+  </body>
+</html>
