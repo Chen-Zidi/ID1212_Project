@@ -38,17 +38,20 @@
   <body class="text-center">
     
 <main class="form-signin">
-  <form >
+  <form action="/registerRequest" method="POST">
     <h1 class="h3 mb-3 fw-normal">Register</h1>
 
     <label for="inputName" class="visually-hidden">Name</label>
-    <input type="text" id="inputName" class="form-control" placeholder="Name" required autofocus>
-
-    <label for="inputEmail" class="visually-hidden">Email address</label>
-    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+    <input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" required autofocus>
 
     <label for="inputPassword" class="visually-hidden">Password</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+    <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required>
+
+    <label for="inputEmail" class="visually-hidden">Email address</label>
+    <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+
+    <label for="inputPhone" class="visually-hidden">Phone Number</label>
+    <input type="number" id="inputPhone" name="inputPhone" class="form-control" placeholder="Phone number" required>
 <!--    <div class="checkbox mb-3">-->
 <!--      <label>-->
 <!--        <input type="checkbox" value="remember-me"> Remember me-->

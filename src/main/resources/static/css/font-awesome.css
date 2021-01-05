@@ -122,7 +122,7 @@ img{ max-width:100%;}
 .msg_send_btn {
     background: #05728f none repeat scroll 0 0;
     border: medium none;
-    border-radius: 50%;
+    border-radius: 10%;
     color: #fff;
     cursor: pointer;
     font-size: 17px;
