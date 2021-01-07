@@ -1,7 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Message;
+import com.example.demo.model.Room;
 import com.example.demo.model.User;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +29,7 @@ import java.util.List;
 public class LoginController {
 
     String url = "http://localhost:10086/";
+    RoomController rc = new RoomController();
 
     @RequestMapping("/test")
     public String test(Model model) {
@@ -128,11 +135,21 @@ public class LoginController {
     public String index(HttpServletRequest request, HttpSession session,Model model) {
 
         List<Message> msgList = new ArrayList<Message>();
+        List<Room> roomList = rc.requestAllRoomAPI();
+
+//        if(session.getAttribute("username") == null){
+//            return "redirect:/login";
+//        }
 
         model.addAttribute("username", session.getAttribute("username"));
         model.addAttribute("MessageList", msgList);
+        model.addAttribute("RoomList",roomList);
+
 
         return "index";
     }
+
+
+
 
 }

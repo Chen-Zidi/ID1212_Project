@@ -61,6 +61,10 @@
         width: 70%;
       }
 
+      #verifyResult{
+        color: #ac2925;
+      }
+
       @media (min-width: 768px) {
         .bd-placeholder-img-lg {
           font-size: 3.5rem;
@@ -75,44 +79,24 @@
   <body class="d-flex flex-column h-100">
     
 <header>
-  <!-- Fixed navbar -->
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
-
-
-      <!--      <a class="navbar-brand" href="#">navbar</a>-->
-
-<!--      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">-->
-<!--        <span class="navbar-toggler-icon"></span>-->
-<!--      </button>-->
-
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
-
           <li class="nav-item active">
                 <p data-th-text = "${username}" class = "nav-text"></p>
-<!--            <a class="nav-link" aria-current="page" href="#">Home</a>-->
           </li>
-
           <li class="nav-item">
             <p class = "nav-text">, Hello!</p>
-<!--            <a class="nav-link" href="#">Link</a>-->
           </li>
-
-<!--          <li class="nav-item">-->
-<!--            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>-->
-<!--          </li>-->
         </ul>
-<!--        <form class="d-flex">-->
-<!--          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
-<!--          <button class="btn btn-outline-success" type="submit">Search</button>-->
-<!--        </form>-->
+
       </div>
     </div>
   </nav>
 </header>
 
-<!-- Begin page content -->
+
 <main class="flex-shrink-0">
   <div class="container">
 
@@ -121,89 +105,59 @@
         <div class="inbox_msg">
           <div class="inbox_people">
             <div class="headind_srch">
-              <div class="recent_heading">
-                <h4>Recent</h4>
+              <div class="rooms_heading">
+                <h4>Rooms</h4>
               </div>
-              <div class="srch_bar">
-                <div class="stylish-input-group">
-                  <input type="text" class="search-bar"  placeholder="Search" >
-                  <span class="input-group-addon">
-                <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
-                </span> </div>
+              <div class="add_room_bar">
+
+                <button type="button" class="btn btn-default btn-sm" onclick="displayAddRoomForm()">
+                  <span class="glyphicon glyphicon-plus"></span> New room
+                </button>
+              </div>
+
+              <div id="addRoomForm" style="display:none">
+              <form action="/requestAddRoom" mehtod="POST">
+                <label for="inputTopic" class="visually-hidden">Topic</label>
+                <input type="text" id="inputTopic" name="inputTopic" class="form-control" placeholder="Topic" required>
+                <label for="inputType" class="visually-hidden">Type</label>
+                <input type="text" id="inputType" name="inputType" class="form-control" placeholder="Type" required>
+                <label for="inputPassword" class="visually-hidden">Password</label>
+                <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
+              </form>
               </div>
             </div>
             <div class="inbox_chat">
-              <div class="chat_list active_chat">
-                <div class="chat_people">
-                  <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                  <div class="chat_ib">
-                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                    <p>Test, which is a new approach to have all solutions
-                      astrology under one roof.</p>
-                  </div>
-                </div>
-              </div>
               <div class="chat_list">
+                <p id="verifyResult" data-th-text = "${verifyResult}" class = "nav-text"></p>
+                <div th:each="room : ${RoomList}">
                 <div class="chat_people">
-                  <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                  <div class="chat_ib">
-                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                    <p>Test, which is a new approach to have all solutions
-                      astrology under one roof.</p>
+                  <div class="chat_content">
+                    <h5 th:text="${room.getTopic()}">topic</h5>
+                    <p th:text="${room.getType()}">type</p>
                   </div>
-                </div>
-              </div>
-              <div class="chat_list">
-                <div class="chat_people">
-                  <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                  <div class="chat_ib">
-                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                    <p>Test, which is a new approach to have all solutions
-                      astrology under one roof.</p>
+                  <div class="chat_enter">
+                    <button type="button" class="btn btn-primary btn-sm" onclick="displayRoomVerification()">
+                      <span class="glyphicon glyphicon-chevron-right"></span> Enter
+                    </button>
                   </div>
-                </div>
-              </div>
-              <div class="chat_list">
-                <div class="chat_people">
-                  <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                  <div class="chat_ib">
-                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                    <p>Test, which is a new approach to have all solutions
-                      astrology under one roof.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="chat_list">
-                <div class="chat_people">
-                  <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                  <div class="chat_ib">
-                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                    <p>Test, which is a new approach to have all solutions
-                      astrology under one roof.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="chat_list">
-                <div class="chat_people">
-                  <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                  <div class="chat_ib">
-                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                    <p>Test, which is a new approach to have all solutions
-                      astrology under one roof.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="chat_list">
-                <div class="chat_people">
-                  <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-                  <div class="chat_ib">
-                    <h5>Sunil Rajput <span class="chat_date">Dec 25</span></h5>
-                    <p>Test, which is a new approach to have all solutions
-                      astrology under one roof.</p>
+                  <div id="enterRoomForm" style="display:none">
+                  <form action="/requestEnterRoom" method="POST" >
+                    <input type="hidden" th:value="${room.getId()}" name="requestRoomId"/>
+                    <input type="hidden" th:value="${room.getPassword()}" name="requestRoomPassword"/>
+                    <input type="password" id="inputRoomPassword" name="inputRoomPassword" class="form-control" placeholder="Room password" required>
+                    <button type="submit" class="btn btn-primary btn-sm">
+                      <span class="glyphicon glyphicon-ok"></span> Verify
+                    </button>
+                  </form>
                   </div>
                 </div>
               </div>
             </div>
+
+            </div>
+
+
           </div>
 
 
@@ -278,7 +232,7 @@
         </div>
 
 
-        <p class="text-center top_spac"> Design by <a target="_blank" href="#">Sunil Rajput</a></p>
+<!--        <p class="text-center top_spac"> Design by <a target="_blank" href="#">Sunil Rajput</a></p>-->
 
       </div>
 

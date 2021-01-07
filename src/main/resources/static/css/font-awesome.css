@@ -17,8 +17,8 @@ img{ max-width:100%;}
 .top_spac{ margin: 20px 0 0;}
 
 
-.recent_heading {float: left; width:40%;}
-.srch_bar {
+.rooms_heading {float: left; width:40%;}
+.add_room_bar {
     display: inline-block;
     text-align: right;
     width: 60%;
@@ -44,14 +44,16 @@ img{ max-width:100%;}
 .chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
 .chat_ib h5 span{ font-size:13px; float:right;}
 .chat_ib p{ font-size:14px; color:#989898; margin:auto}
-.chat_img {
+.chat_content {
+    style:inline-block;
     float: left;
-    width: 11%;
+    width: 70%;
 }
-.chat_ib {
+.chat_enter {
+    style:inline-block;
     float: left;
     padding: 0 0 0 15px;
-    width: 88%;
+    width: 20%;
 }
 
 .chat_people{ overflow:hidden; clear:both;}
