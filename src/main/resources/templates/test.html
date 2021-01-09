@@ -5,9 +5,66 @@
     <title>Title</title>
 </head>
 <body>
-<div th:each="message : ${MessageList}">
-    <p th:text="${message}">content</p>
-    <p th:text="${message.sender}">sender</p>
+
+<script src="./js/stomp.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<!--<script type="application/javascript" src="http://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>-->
+<div>
+    <script type="text/javascript">
+
+        //建立连接对象（还未发起连接）
+        var socket=new SockJS("https://localhost:10086/websocket/");
+
+        // 获取 STOMP 子协议的客户端对象
+        var stompClient = Stomp.over(socket);
+
+        // 向服务器发起websocket连接并发送CONNECT帧
+        stompClient.connect(
+            {},
+            function connectCallback (frame) {
+                // 连接成功时（服务器响应 CONNECTED 帧）的回调方法
+                //document.getElementById("state-info").innerHTML = "连接成功";
+                console.log('on connect:' + frame );
+
+                stompClient.subscribe('/room/1', function (message) {
+                    // showResponse(response.body);
+                    var obj = document.getElementById("display_msg");
+
+                    obj.innerHTML= message.body;
+                    console.log(message.body);
+                    console.log(JSON.parse(message.body));
+                });
+
+                stompClient.send("/msg/chat", {}, "{\n" +
+                    "    \"room\" :1,\n" +
+                    "    \"sender\":\"test\",\n" +
+                    "    \"content\":\"test\",\n" +
+                    "    \"type\":\"test\"\n" +
+                    "}");
+
+            });
+
+
+        // var headers = {ack: 'client', 'selector': "location = 'Europe'"};
+        // var  callback = function(message) {
+        //     if (message.body) {
+        //         console.log("got message with body " + message.body);
+        //         console.log(JSON.parse(message.body));
+        //     } else {
+        //         console.log("got empty message");
+        //     }
+        // };
+        // var subscription = stompClient.subscribe("/topic/1", callback);
+        //stompClient.send("/topic/1", {}, "{\"room\":1,\"sender\":\"test\",\"type\":\"test\",\"content\":\"content\"}");
+
+    </script>
+    <p id = "display_msg" ></p>
+    <button onclick="openSocket()">test 1</button>
+    <button onclick="sendMessage()">test 2</button>
+
+
 </div>
+
+
 </body>
 </html>

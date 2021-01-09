@@ -18,8 +18,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -28,16 +33,11 @@ import java.util.List;
 @Controller
 public class LoginController {
 
-    String url = "http://localhost:10086/";
+    String url = "https://localhost:10086/";
     RoomController rc = new RoomController();
 
     @RequestMapping("/test")
     public String test(Model model) {
-
-        List<Message> msgList = new ArrayList<Message>();
-
-
-        model.addAttribute("MessageList", msgList);
         return "test";
     }
 
@@ -51,24 +51,25 @@ public class LoginController {
     //deal with user input for login
     @RequestMapping("/loginRequest")
     public String getLoginInput(HttpServletRequest request, HttpSession session, Model model) {
+        //get param from page
         String username = request.getParameter("inputName");
         String password = request.getParameter("inputPassword");
         String result = requestLoginAPI(username,password);
-        System.out.println(result);
 
+        //if user not exist
         if(result.equals("UserNotExist")){
             model.addAttribute("errorInfo", "User not exist");
             return "login";
         }
 
+        //if password is not right
         if(result.equals("PasswordNotRight")){
             model.addAttribute("errorInfo", "Wrong password");
             return "login";
         }
 
-        int userId = Integer.parseInt(result.split("=|,")[1]);
-        System.out.println(userId);
 
+        int userId = Integer.parseInt(result.split("=|,")[1]);
 
         //set session
         session.setAttribute("username", username);
@@ -77,10 +78,11 @@ public class LoginController {
         return "redirect:/";
     }
 
-    //call backend api
+    //call backend api for login
     public String requestLoginAPI(String name, String password) {
         RestTemplate restTemplate = new RestTemplate();
 
+        //set param
         MultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
         paramMap.add("username",name);
         paramMap.add("password",password);
@@ -108,14 +110,13 @@ public class LoginController {
         String phone = request.getParameter("inputPhone");
 
         String result = requestRegisterAPI(username, password, email, phone);
-        System.out.println(result);
+
         return "redirect:/login";
     }
 
-    //call backend api
+    //call backend api for register
     public String requestRegisterAPI(String name, String password, String email, String phone) {
         RestTemplate restTemplate = new RestTemplate();
-
         MultiValueMap<String, String> paramMap = new LinkedMultiValueMap<>();
         paramMap.add("username",name);
         paramMap.add("password",password);
@@ -134,16 +135,18 @@ public class LoginController {
     @RequestMapping("/")
     public String index(HttpServletRequest request, HttpSession session,Model model) {
 
-        List<Message> msgList = new ArrayList<Message>();
+
         List<Room> roomList = rc.requestAllRoomAPI();
 
-//        if(session.getAttribute("username") == null){
-//            return "redirect:/login";
-//        }
+        if(session.getAttribute("username") == null){
+            return "redirect:/login";
+        }
 
+        //set model for html
         model.addAttribute("username", session.getAttribute("username"));
-        model.addAttribute("MessageList", msgList);
         model.addAttribute("RoomList",roomList);
+        model.addAttribute("displayRoom", false);
+        model.addAttribute("displayRoomId", -1);
 
 
         return "index";

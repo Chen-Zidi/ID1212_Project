@@ -12,8 +12,7 @@
     <title>Chat helper</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sticky-footer-navbar/">
-    <script src="./js/index.js"></script>
-    
+
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" media="screen" rel="stylesheet">
@@ -77,14 +76,18 @@
     <link href="../css/sticky-footer-navbar.css" rel="stylesheet">
   </head>
   <body class="d-flex flex-column h-100">
-    
+  <script src="./js/index.js"></script>
+  <script src="./js/stomp.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+  <script src="../css/bootstrap.bundle.min.js"></script>
+
 <header>
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container-fluid">
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item active">
-                <p data-th-text = "${username}" class = "nav-text"></p>
+                <p data-th-text = "${username}" class = "nav-text" id="userName"></p>
           </li>
           <li class="nav-item">
             <p class = "nav-text">, Hello!</p>
@@ -162,62 +165,31 @@
 
 
 
-
           <div class="mesgs">
-            <div class="msg_history">
-<!--              <div class="incoming_msg">-->
-<!--                <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>-->
-<!--                <div class="received_msg">-->
-<!--                  <div class="received_withd_msg">-->
-<!--                    <p>Test which is a new approach to have all-->
-<!--                      solutions</p>-->
-<!--                    <span class="time_date"> 11:01 AM    |    June 9</span></div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              <div class="outgoing_msg">-->
-<!--                <div class="sent_msg">-->
-<!--                  <p>Test which is a new approach to have all-->
-<!--                    solutions</p>-->
-<!--                  <span class="time_date"> 11:01 AM    |    June 9</span> </div>-->
-<!--              </div>-->
+            <div class="msg_history" id = "msg_history" th:if="${displayRoom} == true">
+              <div id="message_room">
+              <p style="display:none" th:text="${displayRoomId}" id="roomID"></p>
+              <script>
+                var rid = document.getElementById("roomID").innerText;
+                if(rid != -1){
+                  connectRoom(rid);
+                }
+              </script>
 
-
-
-          <div th:each="message : ${MessageList}">
-
-            <div class="incoming_msg" th:if="${message.getReceiver()} == Paige">
-              <div class="incoming_msg_img">
-                <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
               </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
-                  <p th:text="${message.getContent()}">content</p>
-                  <span class="time_date" th:text="${message.getTime()}">time</span>
-                </div>
-              </div>
-            </div>
-
-          <div class="outgoing_msg" th:if="${message.getSender()} == Paige">
-            <div class="sent_msg">
-              <p th:text="${message.getContent()}"></p>
-              <span class="time_date" th:text="${message.getTime()}"></span> </div>
-          </div>
-
-          </div>
-
 
 
 
 
             <div class="type_msg">
               <div class="input_msg_write">
-                <form action="/SendMessage" method="POST" enctype="multipart/form-data">
+                <form action="/RequestSendMessage" method="POST" enctype="multipart/form-data">
                     <button type="button" class="btn btn-default btn-sm" onclick="fileUpload()">
                       <span class="glyphicon glyphicon-file"></span> File
                     </button>
                     <input type="file" name="myfile" id="uploadFile" style="display:none"/>
                     <input type="text" class="write_msg" id="writeMsg" name="message" placeholder="Type a message" />
-                    <button class="msg_send_btn" id="submitMsg" type="submit" >
+                    <button class="msg_send_btn" id="submitMsg" type="submit" onclick="sendMessage()">
                       <span class="glyphicon glyphicon-send"></span>
                     </button>
                 </form>
@@ -247,7 +219,7 @@
 </footer>
 
 
-    <script src="../css/bootstrap.bundle.min.js"></script>
+
 
       
   </body>
