@@ -41,6 +41,16 @@ public class LoginController {
         return "test";
     }
 
+    //logout
+    @RequestMapping("/logout")
+    public String logout(HttpSession session) {
+        System.out.println("logout");
+//        session.invalidate();
+//        session.setAttribute("username", username);
+//        session.setAttribute("userId",userId);
+        return "redirect:/login";
+    }
+
     //login html page
     @RequestMapping("/login")
     public String login(Model model) {

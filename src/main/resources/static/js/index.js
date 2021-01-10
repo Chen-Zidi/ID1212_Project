@@ -15,11 +15,11 @@ function displayAddRoomForm(){
 
 }
 
-function displayRoomVerification(){
-    if(document.getElementById("enterRoomForm").style.display == "none"){
-        document.getElementById("enterRoomForm").style.display = "";
+function displayRoomVerification(rid){
+    if(document.getElementById("enterRoomForm"+rid).style.display == "none"){
+        document.getElementById("enterRoomForm"+rid).style.display = "";
     }else{
-        document.getElementById("enterRoomForm").style.display = "none";
+        document.getElementById("enterRoomForm"+rid).style.display = "none";
     }
 }
 
@@ -77,10 +77,18 @@ function connectRoom(rid) {
 }
 
 function sendMessage(){
-    stompClient.send("/msg/chat", {}, "{\n" +
-        "    \"room\" :1,\n" +
-        "    \"sender\":\"test\",\n" +
-        "    \"content\":\"test\",\n" +
-        "    \"type\":\"test\"\n" +
-        "}");
+
+    var rid = document.getElementById("roomID").innerText;
+    var input = document.getElementById("writeMsg").value;
+    if(input !== ""){
+        stompClient.send("/msg/chat", {}, "{\n" +
+            "    \"room\" :"+rid+",\n" +
+            "    \"sender\":\""+document.getElementById("userName").innerText+"\",\n" +
+            "    \"content\":\""+input+"\",\n" +
+            "    \"type\":\"text\"\n" +
+            "}");
+    }
+
+    document.getElementById("writeMsg").value = "";
+
 }

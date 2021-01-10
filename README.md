@@ -1,4 +1,10 @@
-###KTH-ID1212-project Client side application
+##KTH-ID1212-project Client side application
+
+### Running environment
+Please do not use Chrome. The web app should run well 
+on firefox. Not sure about other browsers.
+
+
 reference: 
 1. login.html, register.html and signin.css are from bootstrap official website. 
 The authors are: Mark Otto, Jacob Thornton, and Bootstrap contributors.

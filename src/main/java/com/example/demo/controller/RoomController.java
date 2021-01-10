@@ -32,7 +32,9 @@ public class RoomController {
     //verify user password for entering the room
     @RequestMapping("/requestEnterRoom")
     public String verifyUserRoomPassword(HttpServletRequest request, HttpSession session, Model model){
-       //get inputs
+       System.out.println("request Enter room function");
+
+        //get inputs
         String correctPw = request.getParameter("requestRoomPassword");
         String inputPw = request.getParameter("inputRoomPassword");
         String roomId = request.getParameter("requestRoomId");
@@ -100,9 +102,10 @@ public class RoomController {
 
     }
 
-    @PostMapping("/RequestSendMessage")
+    @RequestMapping("/RequestSendMessage")
     public void getUserMsg(@RequestParam("myfile") MultipartFile file, HttpServletRequest request, HttpSession session, Model model){
 
+        System.out.println("request send message function");
         String msgContent = request.getParameter("message");
 
         //deal with file
