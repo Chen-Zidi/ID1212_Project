@@ -1,9 +1,11 @@
 ##KTH-ID1212-project Client side application
 
 ### Running environment
-Please do not use Chrome. The web app should run well 
-on firefox. Not sure about other browsers.
-
+Please do not use Chrome. 
+The web app should run well on firefox and Edge. Not sure about other browsers.
+In order to run on firefox and Edge, you first need to access https://localhost:10086/hello 
+and trust the certificate (which should be alerted as unsafe, but it is actually
+can be trustable from us). Then you can access to localhost:8088/login to login or register.
 
 reference: 
 1. login.html, register.html and signin.css are from bootstrap official website. 
