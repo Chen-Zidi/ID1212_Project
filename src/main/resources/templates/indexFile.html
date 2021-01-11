@@ -27,39 +27,9 @@
             user-select: none;
         }
 
-        .type_msg {
-            /*position: absolute;*/
-            /*bottom: 0;*/
-            /*width: 40%;*/
-            /*vertical-align: bottom;*/
+        #backToIndex{
+            margin-top:10px;
         }
-
-        .nav-text {
-            color: whitesmoke;
-        }
-
-        /*#chooseFile{*/
-
-        /*  background: #05728f none repeat scroll 0 0;*/
-        /*  border: medium none;*/
-        /*  border-radius: 10%;*/
-        /*  color: #fff;*/
-        /*  height:15px;*/
-
-        /*}*/
-
-        /*#submitMsg{*/
-        /*  !*display:inline-block;*!*/
-        /*  !*margin-bottom: 0px;*!*/
-        /*  width: 50px;*/
-        /*  height:30px;*/
-        /*}*/
-
-        #writeMsg {
-            display: inline-block;
-            width: 70%;
-        }
-
         .chat_delete {
             display: inline-block;
         }
@@ -67,6 +37,24 @@
         .chat_enter {
             display: inline-block;
             margin-bottom: 3px;
+        }
+
+        .nav-text {
+            color: whitesmoke;
+        }
+
+        #downloadForm{
+            float:left;
+            width:50%;
+        }
+        #deleteForm{
+            float:left;
+            width:50%;
+        }
+
+        #writeMsg {
+            display: inline-block;
+            width: 70%;
         }
 
         #verifyResult {
@@ -201,54 +189,57 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
-
-
                 </div>
 
 
                 <div class="mesgs">
-                    <div class="msg_history" id="msg_history" th:if="${displayRoom} == true">
-                        <div id="message_room">
-                            <p style="display:none" th:text="${displayRoomId}" id="roomID"></p>
-                            <script>
-                                var rid = document.getElementById("roomID").innerText;
-                                if (rid != -1) {
-                                    connectRoom(rid);
-                                }
-                            </script>
-
-                        </div>
-
-
-                        <div class="type_msg">
-                            <div class="input_msg_write">
-                                <!--                                <form action="/RequestSendMessage" method="POST" enctype="multipart/form-data">-->
-                                <div>
-                                    <div>
-                                        <form action="/directFilePage" method="POST">
-                                            <input type="hidden" th:value="${displayRoomId}" name="directFileRoomId"/>
-                                            <button class="btn btn-default btn-sm" type="submit">
-                                                <span class="glyphicon glyphicon-file"></span> File
-                                            </button>
-                                        </form>
-                                    </div>
-
-                                    <input type="text" class="write_msg" id="writeMsg" name="message"
-                                           placeholder="Type a message"/>
-                                    <button class="msg_send_btn" id="submitMsg" onclick="sendMessage()">
-                                        <span class="glyphicon glyphicon-send"></span>
+                    <div class="file_history" id="file_block" th:if="${displayRoom} == true">
+                        <p style="display:none" th:text="${displayRoomId}" id="roomID"></p>
+                        <p>File Histories:</p>
+                        <div th:each="file : ${FileList}" id="file_history">
+                            <div>
+                                <p th:text="${file.getName()}"></p>
+                                <p th:text="${file.getUpdateTime()}"></p>
+                                <div id="downloadForm">
+                                <form action="/requestFileDownload" method="POST" >
+                                    <input type="hidden" th:value="${file.getName()}" name="requestDownloadFileName"/>
+                                    <input type="hidden" th:value="${file.getId()}" name="requestDownloadFileId"/>
+                                    <input type="hidden" th:value="${displayRoomId}" name="requestDownloadFileRoomId"/>
+                                    <button class="btn btn-primary btn-sm">
+                                        <span class="glyphicon glyphicon-download"></span>Download
                                     </button>
-                                    <!--                                </form>-->
+                                </form>
                                 </div>
-
-
+                                <div  id="deleteForm">
+                                <form action="/requestFileDelete" method="POST">
+                                    <input type="hidden" th:value="${file.getId()}" name="requestDeleteFileId"/>
+                                    <input type="hidden" th:value="${displayRoomId}" name="requestDeleteFileRoomId"/>
+                                    <button class="btn btn-primary btn-sm">
+                                        <span class="glyphicon glyphicon-remove"></span>Delete
+                                    </button>
+                                </form>
+                                </div>
                             </div>
-
                         </div>
-                    </div>
 
+                        <div id="file_upload_block">
+                            <form action="/requestFilesUpload" method="post" enctype="multipart/form-data">
+                                File Upload: <input type="file" name="myfiles"/><br/>
+                                <input type="hidden" th:value="${displayRoomId}" name="fileRoomId">
+                                <button class="btn btn-primary btn-sm" type="submit">
+                                    <span class="glyphicon glyphicon-upload"></span>Upload
+                                </button>
+                            </form>
+                            <form action="/backToMsgIndex" method="post"  id="backToIndex">
+                                <button class="btn btn-primary btn-sm" type="submit">
+                                    <input type="hidden" th:value="${displayRoomId}" name="msgRoomId">
+                                    <span class="glyphicon glyphicon-font"></span>Send Message
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>

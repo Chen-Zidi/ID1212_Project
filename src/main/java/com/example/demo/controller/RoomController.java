@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.*;
 import com.example.demo.model.Message;
 import com.example.demo.model.Room;
+import com.example.demo.model.UserFile;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +21,19 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 public class RoomController {
 
     String url = "https://localhost:10086/";
 
+
     //verify user password for entering the room
     @RequestMapping("/requestEnterRoom")
     public String verifyUserRoomPassword(HttpServletRequest request, HttpSession session, Model model){
-       System.out.println("request Enter room function");
+
+        //FileController fc = new FileController();
 
         //get inputs
         String correctPw = request.getParameter("requestRoomPassword");
@@ -41,6 +42,9 @@ public class RoomController {
 
         //get all rooms from backend
         List<Room> roomList = requestAllRoomAPI();
+        //System.out.println(roomId);
+        //List<UserFile> fileList = fc.requestAllFileForRoomAPI(roomId);
+
 
         //if password is not correct, alert
         if(!correctPw.equals(inputPw)){
@@ -49,16 +53,58 @@ public class RoomController {
             model.addAttribute("displayRoom", false);
             model.addAttribute("displayRoomId", -1);
             model.addAttribute("RoomList",roomList);
+            //model.addAttribute("FileList",null);
+
             return "index";
         }
 
-        //if password is correct, then enter the room
-        System.out.println("correct room password");
 
+
+        //if password is correct, then enter the room
         model.addAttribute("username", session.getAttribute("username"));
         model.addAttribute("displayRoom", true);
         model.addAttribute("displayRoomId", roomId);
         model.addAttribute("RoomList",roomList);
+        //model.addAttribute("FileList",fileList);
+        return "index";
+    }
+
+    //verify user password for entering the room
+    @RequestMapping("/requestDeleteRoom")
+    public String verifyUserDeleteRoomPassword(HttpServletRequest request, HttpSession session, Model model){
+
+        //get inputs
+        String correctPw = request.getParameter("requestDeleteRoomPassword");
+        String inputPw = request.getParameter("inputDeleteRoomPassword");
+        String roomId = request.getParameter("requestDeleteRoomId");
+
+
+
+        //if password is not correct, alert
+        if(!correctPw.equals(inputPw)){
+            //get all rooms from backend
+            List<Room> roomList = requestAllRoomAPI();
+
+            model.addAttribute("verifyResult","Wrong Room Password! Delete fail!");
+            model.addAttribute("username", session.getAttribute("username"));
+            model.addAttribute("displayRoom", false);
+            model.addAttribute("displayRoomId", -1);
+            model.addAttribute("RoomList",roomList);
+            return "index";
+        }
+
+        deleteRoomAPI(roomId);
+
+        //get all rooms from backend
+        List<Room> roomList = requestAllRoomAPI();
+
+        //if password is correct, then enter the room
+        model.addAttribute("username", session.getAttribute("username"));
+        model.addAttribute("displayRoom", true);
+        model.addAttribute("displayRoomId", false);
+        model.addAttribute("displayRoomId", -1);
+        model.addAttribute("RoomList",roomList);
+        //model.addAttribute("FileList",fileList);
         return "index";
     }
 
@@ -86,7 +132,7 @@ public class RoomController {
         paramMap.add("topic",topic);
         paramMap.add("password",password);
         paramMap.add("type",type);
-
+        //System.out.println(paramMap);
         //call backend and return a string
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url+"room/add", paramMap, String.class);
         String body = responseEntity.getBody();
@@ -98,64 +144,20 @@ public class RoomController {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<List<Room>> response = restTemplate.exchange(url+ "/room/get_all", HttpMethod.GET, null, new ParameterizedTypeReference<List<Room>>() {});
         List<Room> roomList = response.getBody();
+
         return roomList;
 
     }
 
-    @RequestMapping("/RequestSendMessage")
-    public void getUserMsg(@RequestParam("myfile") MultipartFile file, HttpServletRequest request, HttpSession session, Model model){
+    public String deleteRoomAPI(String rId)  {
+        RestTemplate restTemplate = new RestTemplate();
 
-        System.out.println("request send message function");
-        String msgContent = request.getParameter("message");
+        Long id = Long.valueOf(rId);
 
-        //deal with file
-        if(file.isEmpty()){
-            System.out.println("no file");
-        }else {
-            InputStream inputStream = null;
-            OutputStream outputStream = null;
-            try {
-                String path = "./FileStorage/";
-                inputStream = file.getInputStream();
-                String fileName = file.getOriginalFilename();
-                File targetFile = new File(path + fileName);
-                if (!targetFile.getParentFile().exists()) {
-                    targetFile.getParentFile().mkdir();
-                }
-                outputStream = new FileOutputStream(targetFile);
-                FileCopyUtils.copy(inputStream, outputStream);
-                System.out.println("file upload success");
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("file upload fail");
-            } finally {//close input and output stream
-                if (inputStream != null) {
-                    try {
-                        inputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (outputStream != null) {
-                    try {
-                        outputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
+        restTemplate.delete(url+"room/delete?id={id}", id);
 
-
-
-//        //deal with messages
-//        Message msg = new Message("Paige","receiver",msgContent,new Date());
-//        msgList.add(msg);
-//        msgList.add(new Message("nobody","Paige","ok",new Date()));
-////        System.out.println(msgContent);
-
+        return "ok";
 
     }
-
 
 }

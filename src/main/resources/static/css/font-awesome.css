@@ -50,10 +50,10 @@ img{ max-width:100%;}
     width: 70%;
 }
 .chat_enter {
-    style:inline-block;
-    float: left;
-    padding: 0 0 0 15px;
-    width: 20%;
+    /*style:inline-block;*/
+    /*float: left;*/
+    /*padding: 0 0 0 15px;*/
+    /*width: 20%;*/
 }
 
 .chat_people{ overflow:hidden; clear:both;}
@@ -135,7 +135,7 @@ img{ max-width:100%;}
     width: 50px;
 }
 .messaging { padding: 0 0 50px 0;}
-.msg_history {
+.msg_history,.file_history {
     height: 516px;
     overflow-y: auto;
 }

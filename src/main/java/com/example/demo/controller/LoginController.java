@@ -133,13 +133,12 @@ public class LoginController {
         paramMap.add("email",email);
         paramMap.add("phone_number",phone);
 
-
-
         //call backend and return a string
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(url+"register", paramMap, String.class);
         String body = responseEntity.getBody();
         return body;
     }
+
 
     //go to main chat room page
     @RequestMapping("/")

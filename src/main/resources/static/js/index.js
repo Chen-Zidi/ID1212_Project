@@ -1,8 +1,15 @@
+function showFileBlock(){
+    console.log("js function");
+    document.getElementById("msg_history").style.display = "none";
+    document.getElementById("file_history").style.display = "";
+}
+
 
 
 function fileUpload(){
     document.getElementById("uploadFile").click();
 }
+
 
 
 function displayAddRoomForm(){
@@ -20,6 +27,14 @@ function displayRoomVerification(rid){
         document.getElementById("enterRoomForm"+rid).style.display = "";
     }else{
         document.getElementById("enterRoomForm"+rid).style.display = "none";
+    }
+}
+
+function displayRoomDeleteVerification(rid){
+    if(document.getElementById("deleteRoomForm"+rid).style.display == "none"){
+        document.getElementById("deleteRoomForm"+rid).style.display = "";
+    }else{
+        document.getElementById("deleteRoomForm"+rid).style.display = "none";
     }
 }
 
@@ -76,10 +91,13 @@ function connectRoom(rid) {
         });
 }
 
+//send message
 function sendMessage(){
 
     var rid = document.getElementById("roomID").innerText;
     var input = document.getElementById("writeMsg").value;
+
+    //if input is not empty
     if(input !== ""){
         stompClient.send("/msg/chat", {}, "{\n" +
             "    \"room\" :"+rid+",\n" +
@@ -87,8 +105,11 @@ function sendMessage(){
             "    \"content\":\""+input+"\",\n" +
             "    \"type\":\"text\"\n" +
             "}");
+    }else{
+        alert("message should not be empty");
     }
 
+    //clear the input
     document.getElementById("writeMsg").value = "";
 
 }
