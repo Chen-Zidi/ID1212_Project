@@ -1,12 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Message;
 import com.example.demo.model.Room;
-import com.example.demo.model.User;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,20 +8,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -36,25 +20,16 @@ public class LoginController {
     String url = "https://localhost:10086/";
     RoomController rc = new RoomController();
 
-    @RequestMapping("/test")
-    public String test(Model model) {
-        return "test";
-    }
-
     //logout
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
-        System.out.println("logout");
-//        session.invalidate();
-//        session.setAttribute("username", username);
-//        session.setAttribute("userId",userId);
+        session.invalidate();
         return "redirect:/login";
     }
 
     //login html page
     @RequestMapping("/login")
     public String login(Model model) {
-        model.addAttribute("errorInfo", "");
         return "login";
     }
 

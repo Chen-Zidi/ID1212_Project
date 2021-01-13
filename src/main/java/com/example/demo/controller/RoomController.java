@@ -1,26 +1,18 @@
 package com.example.demo.controller;
 
-import com.example.demo.*;
-import com.example.demo.model.Message;
 import com.example.demo.model.Room;
-import com.example.demo.model.UserFile;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.*;
 import java.util.*;
 
 @Controller
@@ -149,6 +141,7 @@ public class RoomController {
 
     }
 
+    //call backend api to delete room
     public String deleteRoomAPI(String rId)  {
         RestTemplate restTemplate = new RestTemplate();
 

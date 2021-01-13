@@ -113,3 +113,12 @@ function sendMessage(){
     document.getElementById("writeMsg").value = "";
 
 }
+
+
+//check file is not empty
+function checkFileContent(){
+    var fileInput = document.getElementById("myfiles");
+    if(fileInput.value==""){
+        alert("Please choose a file.");
+    }
+}

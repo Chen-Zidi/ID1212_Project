@@ -19,6 +19,10 @@
     <link href="../css/bootstrap.css" media="screen" rel="stylesheet">
     <link href="../css/font-awesome.css" type="text/css" rel="stylesheet">
     <style>
+        #fileButtonForm{
+            float:right;
+            margin-top:15px;
+        }
         .bd-placeholder-img {
             font-size: 1.125rem;
             text-anchor: middle;
@@ -48,12 +52,9 @@
 
         /*}*/
 
-        /*#submitMsg{*/
-        /*  !*display:inline-block;*!*/
-        /*  !*margin-bottom: 0px;*!*/
-        /*  width: 50px;*/
-        /*  height:30px;*/
-        /*}*/
+        #submitMsg{
+          margin-right:60px;
+        }
 
         #writeMsg {
             display: inline-block;
@@ -224,23 +225,22 @@
 
                         <div class="type_msg">
                             <div class="input_msg_write">
-                                <!--                                <form action="/RequestSendMessage" method="POST" enctype="multipart/form-data">-->
                                 <div>
-                                    <div>
-                                        <form action="/directFilePage" method="POST">
-                                            <input type="hidden" th:value="${displayRoomId}" name="directFileRoomId"/>
-                                            <button class="btn btn-default btn-sm" type="submit">
-                                                <span class="glyphicon glyphicon-file"></span> File
-                                            </button>
-                                        </form>
-                                    </div>
+
 
                                     <input type="text" class="write_msg" id="writeMsg" name="message"
                                            placeholder="Type a message"/>
                                     <button class="msg_send_btn" id="submitMsg" onclick="sendMessage()">
                                         <span class="glyphicon glyphicon-send"></span>
                                     </button>
-                                    <!--                                </form>-->
+<!--                                    <div>-->
+                                        <form action="/directFilePage" method="POST" id="fileButtonForm">
+                                            <input type="hidden" th:value="${displayRoomId}" name="directFileRoomId"/>
+                                            <button class="btn btn-default btn-sm" type="submit">
+                                                <span class="glyphicon glyphicon-file"></span> File
+                                            </button>
+                                        </form>
+<!--                                    </div>-->
                                 </div>
 
 

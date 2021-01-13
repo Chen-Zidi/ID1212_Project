@@ -19,12 +19,20 @@
     <link href="../css/bootstrap.css" media="screen" rel="stylesheet">
     <link href="../css/font-awesome.css" type="text/css" rel="stylesheet">
     <style>
+        .resultInfo{
+            color:#1c7430;
+        }
+
         .bd-placeholder-img {
             font-size: 1.125rem;
             text-anchor: middle;
             -webkit-user-select: none;
             -moz-user-select: none;
             user-select: none;
+        }
+
+        #fileUploadResult{
+            color: #ac2925;
         }
 
         #backToIndex{
@@ -194,6 +202,8 @@
 
 
                 <div class="mesgs">
+                    <p th:text="${fileUploadResult}" id="fileUploadResult" class="resultInfo"></p>
+                    <p th:text="${fileDownloadResult}" id="fileDownloadResult" class="resultInfo"></p>
                     <div class="file_history" id="file_block" th:if="${displayRoom} == true">
                         <p style="display:none" th:text="${displayRoomId}" id="roomID"></p>
                         <p>File Histories:</p>
@@ -225,9 +235,9 @@
 
                         <div id="file_upload_block">
                             <form action="/requestFilesUpload" method="post" enctype="multipart/form-data">
-                                File Upload: <input type="file" name="myfiles"/><br/>
+                                File Upload: <input type="file" name="myfiles" id="myfiles"/><br/>
                                 <input type="hidden" th:value="${displayRoomId}" name="fileRoomId">
-                                <button class="btn btn-primary btn-sm" type="submit">
+                                <button class="btn btn-primary btn-sm" type="submit" onclick="checkFileContent()">
                                     <span class="glyphicon glyphicon-upload"></span>Upload
                                 </button>
                             </form>

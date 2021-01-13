@@ -1,5 +1,4 @@
 package com.example.demo.controller;
-import ch.qos.logback.core.util.FileUtil;
 import com.example.demo.model.*;
 
 
@@ -32,29 +31,32 @@ import javax.servlet.http.HttpSession;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+
+//file controller to deal with files upload, delete, download and get from the backend
 @Controller
 public class FileController {
     String url = "https://localhost:10086/";
     RoomController rc = new RoomController();
 
+    //direct to the file page
     @RequestMapping("/directFilePage")
     public String directFilePage(HttpServletRequest request,HttpSession session,Model model){
         String rid = request.getParameter("directFileRoomId");
         System.out.println(rid);
+
+        //if username is null, back to login page
         if(session.getAttribute("username") == null){
             return "redirect:/login";
         }
 
+        //get all the files for the chat room
         List<UserFile> fl = requestAllFileForRoomAPI(rid);
+
         //set model for html
         model.addAttribute("username", session.getAttribute("username"));
         model.addAttribute("RoomList",rc.requestAllRoomAPI());
@@ -65,10 +67,13 @@ public class FileController {
 
     }
 
+    //delete file
     @RequestMapping("/requestFileDelete")
     public String requestDeleteFile(HttpServletRequest request,HttpSession session,Model model){
+
         String fid = request.getParameter("requestDeleteFileId");
         String rid = request.getParameter("requestDeleteFileRoomId");
+
 
         requestDeleteFileAPI(fid);
 
@@ -84,6 +89,7 @@ public class FileController {
 
     }
 
+    //back to message index from the file index page
     @RequestMapping("backToMsgIndex")
     public String backToMessageIndex(HttpSession session, Model model,HttpServletRequest request){
         String rid = request.getParameter("msgRoomId");
@@ -101,6 +107,7 @@ public class FileController {
         return "index";
     }
 
+    //download file
     @RequestMapping("/requestFileDownload")
     public String downloadFiles(HttpServletRequest request,Model model, HttpSession session){
         String fid = request.getParameter("requestDownloadFileId");
@@ -116,17 +123,22 @@ public class FileController {
         model.addAttribute("displayRoom", true);
         model.addAttribute("displayRoomId", rid);
         model.addAttribute("FileList", fl);
+        model.addAttribute("fileDownloadResult", "Please find the downloaded file in /ProjectDownloadFiles under your user folder.");
         return "indexFile";
     }
 
+    //upload file
     @RequestMapping("/requestFilesUpload")
-    public String uploadFiles(@RequestParam("myfiles") MultipartFile[] files,HttpServletRequest request, HttpServletResponse response, HttpSession session,Model model) throws IOException {
+    public String uploadFiles(@RequestParam("myfiles") MultipartFile[] files,HttpServletRequest request, HttpServletResponse response, HttpSession session,Model model) throws IOException, JSONException {
         String rid = request.getParameter("fileRoomId");
+        String result = "";
 
-        if(!rid.equals("-1")){
-            uploadFileAPI(files, rid, session.getAttribute("userId").toString());
-        }
-
+        //make sure that the file is not empty and the user is currently in a room
+           if(!files[0].getOriginalFilename().equals("")){
+               if(!rid.equals("-1")){
+                   result = uploadFileAPI(files, rid, session.getAttribute("userId").toString());
+               }
+           }
 
         List<UserFile> fl = requestAllFileForRoomAPI(rid);
         //set model for html
@@ -136,12 +148,21 @@ public class FileController {
         model.addAttribute("displayRoomId", rid);
         model.addAttribute("FileList", fl);
 
+        //deal with situation that upload fails
+        if(result.equals("file upload error")){
+            model.addAttribute("fileUploadResult", "File upload error, please try again!");
+        }
+        if(result.equals("file duplicate")){
+            model.addAttribute("fileUploadResult", "Your file has a duplicate name with others. You cannot alter it.");
+        }
+
+
         return "indexFile";
     }
 
 
+    //call backend for downloading files
     public String downloadFileAPI(String fileId, String fileName){
-
 
         try {
             RestTemplate restTemplate = new RestTemplate();
@@ -157,6 +178,7 @@ public class FileController {
                 dir.mkdirs();
             }
 
+            //write file to the directory
             Files.write(Paths.get(System.getProperty("user.home")+"\\ProjectDownloadFiles\\"+fileName), response.getBody());
         }catch (Exception e){
             e.printStackTrace();
@@ -166,15 +188,20 @@ public class FileController {
         return "ok";
     }
 
-    public String uploadFileAPI(MultipartFile[] files, String roomId, String userId) throws IOException {
+    //call backend for uploading file
+    public String uploadFileAPI(MultipartFile[] files, String roomId, String userId) throws IOException, JSONException {
         RestTemplate restTemplate = new RestTemplate();
 
+        //cache the file locally
         String path = System.getProperty("user.home")+"\\TempFiles\\";
+        File parent = new File(path);
+        if(!parent.exists()){
+           parent.mkdirs();
+        }
         String fileName = files[0].getOriginalFilename();
         File newFile = new File(path + fileName);
-        if(!newFile.getParentFile().exists()){
-            newFile.getParentFile().mkdirs();
-        }
+
+        //tranverse the file to resource
         files[0].transferTo(newFile);
         FileSystemResource resource = new FileSystemResource(newFile);
 
@@ -192,8 +219,6 @@ public class FileController {
 //
 //        }
 
-
-        //System.out.println(resource);
         HttpHeaders headers = new HttpHeaders();
         MediaType type = MediaType.parseMediaType("multipart/form-data");
         headers.setContentType(type);
@@ -210,7 +235,16 @@ public class FileController {
         String result = restTemplate.postForObject(url+ "file/upload", request, String.class);
         System.out.println("file upload result: " + result);
 
+        JSONObject jsonFormatResult = new JSONObject(result);
+        if(jsonFormatResult.get("status") == (Integer)3){
+            System.out.println("file duplicate with others");
+            return "file duplicate";
+        }
 
+        if(jsonFormatResult.get("status") == (Integer)2){
+            System.out.println("file upload error");
+            return "upload error";
+        }
         return result;
     }
 
@@ -237,7 +271,7 @@ public class FileController {
 
     }
 
-//    //call backend api to have all files for the room
+    //call backend api to delete file
     public String requestDeleteFileAPI(String fileId)  {
         RestTemplate restTemplate = new RestTemplate();
 
