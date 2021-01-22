@@ -1,4 +1,4 @@
-###KTH-ID1212-project Client side application
+### KTH-ID1212-project Client side application
 
 ## Introduction
 This is a client-server chat application with user account management functionality. Users can send either files or messages in chat rooms. In order to enter a chat room, the user need to know the password for the room. Files and messages are room based. The project frontend is based on Spring boot, MVC, web socket, and RESTful APIs. The connection between frontend and backend is encrypted (https).
